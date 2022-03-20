@@ -11,10 +11,10 @@ namespace Cab_Invoice_Problem
         public double totalFare { get; set; }
         public double averageFarePerRide { get; set; }
 
-        public object GettingDetailsOfInvoiceInObject(Ride[] rides)
+        public object GettingDetailsOfInvoiceInObject(List<Ride> rides)
         {
             this.totalFare = GetTotalFareMultipleRide(rides);
-            this.totalNumberOfRides = rides.Length;
+            this.totalNumberOfRides = rides.Count;
             this.averageFarePerRide = this.totalFare / this.totalNumberOfRides;
             return this;
         }

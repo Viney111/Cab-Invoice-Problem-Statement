@@ -18,7 +18,7 @@ namespace Cab_Invoice_Problem
             }
             return singleRideFare;
         }
-        public double GetTotalFareMultipleRide(Ride[] rides)
+        public double GetTotalFareMultipleRide(List<Ride> rides)
         {
             double multipleRideFare = 0;
             foreach(Ride ride in rides)
@@ -27,13 +27,17 @@ namespace Cab_Invoice_Problem
             }
             return multipleRideFare;
         }
-        public List<EnhancedInvoiceDetails> GetInvoiceDetailsOfRides(Ride[] rides)
+        public EnhancedInvoiceDetails GetInvoiceDetailsOfRides(List<Ride> rides)
         {
-            List<EnhancedInvoiceDetails> invoiceDetailsList = new List<EnhancedInvoiceDetails>();
             EnhancedInvoiceDetails invoiceDetails = new EnhancedInvoiceDetails();
             invoiceDetails.GettingDetailsOfInvoiceInObject(rides);
-            invoiceDetailsList.Add(invoiceDetails);
-            return invoiceDetailsList;
+            return invoiceDetails;
+        }
+        public EnhancedInvoiceDetails GetInvoiceByUserId(string userId)
+        {
+            var userRideList = RideRepository.GetRideListByUserIDIfAny(userId);
+            var invoiceDetailsByUserId = GetInvoiceDetailsOfRides(userRideList);
+            return invoiceDetailsByUserId;
         }
     }
 }
