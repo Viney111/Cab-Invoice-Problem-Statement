@@ -27,5 +27,13 @@ namespace Cab_Invoice_Problem
             }
             return multipleRideFare;
         }
+        public List<EnhancedInvoiceDetails> GetInvoiceDetailsOfRides(Ride[] rides)
+        {
+            List<EnhancedInvoiceDetails> invoiceDetailsList = new List<EnhancedInvoiceDetails>();
+            EnhancedInvoiceDetails invoiceDetails = new EnhancedInvoiceDetails();
+            invoiceDetails.GettingDetailsOfInvoiceInObject(rides);
+            invoiceDetailsList.Add(invoiceDetails);
+            return invoiceDetailsList;
+        }
     }
 }
