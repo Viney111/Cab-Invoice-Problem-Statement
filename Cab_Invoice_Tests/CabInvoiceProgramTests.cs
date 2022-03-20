@@ -24,25 +24,25 @@ namespace Cab_Invoice_Tests
         [Test]
         public void GivenDistanceAndTimeForSingleRide_InvoiceGenerator_ReturnTotalFare()
         {
-            double result = cabInvoiceGenerator.GetTotalFareSingleRide(5,10);
+            double result = cabInvoiceGenerator.GetTotalFareSingleRide(TypeOfRide.NORMAL_RIDE,5,10);
             Assert.AreEqual(60,result);
         }
         [Test]
         public void GivenDistanceAndTimeForSingleRide_LessThanMinFare_InvoiceGenerator_ReturnMinimumFare()
         {
-            double result = cabInvoiceGenerator.GetTotalFareSingleRide(0.1, 0.5);
+            double result = cabInvoiceGenerator.GetTotalFareSingleRide(TypeOfRide.NORMAL_RIDE,0.1, 0.5);
             Assert.AreEqual(5, result);
         }
         [Test]
         public void GivenDistanceAndTimeForMultipleRide_InvoiceGenerator_ReturnTotalFare()
         {
-            double result = cabInvoiceGenerator.GetTotalFareMultipleRide(multipleRides1);
+            double result = cabInvoiceGenerator.GetTotalFareMultipleRide(TypeOfRide.NORMAL_RIDE,multipleRides1);
             Assert.AreEqual(80, result);
         }
         [Test]
         public void GivenDistanceAndTimeForMultipleRide_InvoiceGenerator_ReturnListofInvoiceDetails()
         {
-            var invoiceDetails = cabInvoiceGenerator.GetInvoiceDetailsOfRides(multipleRides1);
+            var invoiceDetails = cabInvoiceGenerator.GetInvoiceDetailsOfRides(TypeOfRide.NORMAL_RIDE,multipleRides1);
             Assert.AreEqual(20,invoiceDetails.averageFarePerRide);           
         }
         [Test]
@@ -50,8 +50,8 @@ namespace Cab_Invoice_Tests
         {
             rideRepository.AddRidesInMap("Viney111", multipleRides1);
             rideRepository.AddRidesInMap("Yash111", multipleRides2);
-            var invoiceDetailsFor_Viney = cabInvoiceGenerator.GetInvoiceByUserId("Viney111");
-            var invoiceDetailsFor_Yash = cabInvoiceGenerator.GetInvoiceByUserId("Yash111");
+            var invoiceDetailsFor_Viney = cabInvoiceGenerator.GetInvoiceByUserId(TypeOfRide.NORMAL_RIDE, "Viney111");
+            var invoiceDetailsFor_Yash = cabInvoiceGenerator.GetInvoiceByUserId(TypeOfRide.NORMAL_RIDE,"Yash111");
             Assert.AreEqual(20, invoiceDetailsFor_Viney.averageFarePerRide);
             Assert.AreEqual(5, invoiceDetailsFor_Yash.averageFarePerRide);
         }
@@ -60,8 +60,8 @@ namespace Cab_Invoice_Tests
         {
             rideRepository.AddRidesInMap("Viney111", multipleRides1);
             rideRepository.AddRidesInMap("Yash111", multipleRides2);
-            var invoiceDetailsFor_Viney = cabInvoiceGenerator.GetInvoiceByUserId("Viney111");
-            var invoiceDetailsFor_Yash = cabInvoiceGenerator.GetInvoiceByUserId("Yash111");
+            var invoiceDetailsFor_Viney = cabInvoiceGenerator.GetInvoiceByUserId(TypeOfRide.NORMAL_RIDE,"Viney111");
+            var invoiceDetailsFor_Yash = cabInvoiceGenerator.GetInvoiceByUserId(TypeOfRide.NORMAL_RIDE,"Yash111");
             Assert.AreEqual(80, invoiceDetailsFor_Viney.totalFare);
             Assert.AreEqual(10, invoiceDetailsFor_Yash.totalFare);
         }
@@ -70,10 +70,21 @@ namespace Cab_Invoice_Tests
         {
             rideRepository.AddRidesInMap("Viney111", multipleRides1);
             rideRepository.AddRidesInMap("Yash111", multipleRides2);
-            var invoiceDetailsFor_Viney = cabInvoiceGenerator.GetInvoiceByUserId("Viney111");
-            var invoiceDetailsFor_Yash = cabInvoiceGenerator.GetInvoiceByUserId("Yash111");
+            var invoiceDetailsFor_Viney = cabInvoiceGenerator.GetInvoiceByUserId(TypeOfRide.NORMAL_RIDE,"Viney111");
+            var invoiceDetailsFor_Yash = cabInvoiceGenerator.GetInvoiceByUserId(TypeOfRide.NORMAL_RIDE,"Yash111");
             Assert.AreEqual(4, invoiceDetailsFor_Viney.totalNumberOfRides);
             Assert.AreEqual(2, invoiceDetailsFor_Yash.totalNumberOfRides);
+        }
+
+        [Test]
+        public void GivenUserIDInInvoice_WithPremiumAndNormalRide_GetsListofRides_ReturnAverageFareORespectiveRides()
+        {
+            rideRepository.AddRidesInMap("Viney111", multipleRides1);
+            rideRepository.AddRidesInMap("Yash111", multipleRides2);
+            var invoiceDetailsFor_Viney = cabInvoiceGenerator.GetInvoiceByUserId(TypeOfRide.PREMIUM_RIDE, "Viney111");
+            var invoiceDetailsFor_Yash = cabInvoiceGenerator.GetInvoiceByUserId(TypeOfRide.NORMAL_RIDE, "Yash111");
+            Assert.AreEqual(38.75, invoiceDetailsFor_Viney.averageFarePerRide);
+            Assert.AreEqual(5, invoiceDetailsFor_Yash.averageFarePerRide);
         }
     }
 }
