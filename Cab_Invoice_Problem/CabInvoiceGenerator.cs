@@ -5,38 +5,37 @@ namespace Cab_Invoice_Problem
 {
     public class CabInvoiceGenerator
     {
-        const int COST_PER_KM = 10;
-        const int COST_PER_MINUTE = 1;
-        const int MINIMUM_FARE = 5;
 
-        public double GetTotalFareSingleRide(double distance, double time)
+        public double GetTotalFareSingleRide(TypeOfRide ride, double distance, double time)
         {
-            double singleRideFare = distance * COST_PER_KM + time * COST_PER_MINUTE;
-            if (singleRideFare < MINIMUM_FARE)
+            RideType rideType = new RideType();
+            rideType.InitializingDetailsAsPerRideType(ride);
+            double singleRideFare = distance * rideType.COST_PER_KM + time * rideType.COST_PER_MINUTE;
+            if (singleRideFare < rideType.MINIMUM_FARE)
             {
-                return MINIMUM_FARE;
+                return rideType.MINIMUM_FARE;
             }
             return singleRideFare;
         }
-        public double GetTotalFareMultipleRide(List<Ride> rides)
+        public double GetTotalFareMultipleRide(TypeOfRide typeRides,List<Ride> rides)
         {
             double multipleRideFare = 0;
             foreach(Ride ride in rides)
             {
-                multipleRideFare += GetTotalFareSingleRide(ride.distance, ride.time);
+                multipleRideFare += GetTotalFareSingleRide(typeRides ,ride.distance, ride.time);
             }
             return multipleRideFare;
         }
-        public EnhancedInvoiceDetails GetInvoiceDetailsOfRides(List<Ride> rides)
+        public EnhancedInvoiceDetails GetInvoiceDetailsOfRides(TypeOfRide typeRides,List<Ride> rides)
         {
             EnhancedInvoiceDetails invoiceDetails = new EnhancedInvoiceDetails();
-            invoiceDetails.GettingDetailsOfInvoiceInObject(rides);
+            invoiceDetails.GettingDetailsOfInvoiceInObject(typeRides,rides);
             return invoiceDetails;
         }
-        public EnhancedInvoiceDetails GetInvoiceByUserId(string userId)
+        public EnhancedInvoiceDetails GetInvoiceByUserId(TypeOfRide typeRides,string userId)
         {
             var userRideList = RideRepository.GetRideListByUserIDIfAny(userId);
-            var invoiceDetailsByUserId = GetInvoiceDetailsOfRides(userRideList);
+            var invoiceDetailsByUserId = GetInvoiceDetailsOfRides(typeRides,userRideList);
             return invoiceDetailsByUserId;
         }
     }
