@@ -18,7 +18,7 @@ namespace Cab_Invoice_Problem
 
         public TypeOfRide typeOfRide;
 
-        public object InitializingDetailsAsPerRideType(TypeOfRide ride)
+        public RideType InitializingDetailsAsPerRideType(TypeOfRide ride)
         {
             switch (ride)
             {

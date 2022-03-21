@@ -11,7 +11,7 @@ namespace Cab_Invoice_Problem
         public double totalFare { get; set; }
         public double averageFarePerRide { get; set; }
 
-        public object GettingDetailsOfInvoiceInObject(TypeOfRide rideTypes,List<Ride> rides)
+        public EnhancedInvoiceDetails GettingDetailsOfInvoiceInObject(TypeOfRide rideTypes,List<Ride> rides)
         {
             this.totalFare = GetTotalFareMultipleRide(rideTypes,rides);
             this.totalNumberOfRides = rides.Count;
